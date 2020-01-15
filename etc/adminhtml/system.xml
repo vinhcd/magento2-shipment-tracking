@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="shipping">
+            <group id="tracking_number" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Tracking Configuration</label>
+
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="include_in_customer_dashboard" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable Tracking in customer dashboard</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="email_inclusion" translate="label" type="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Code in email</label>
+                    <comment>
+                        Add this code to email, to show tracking codes:
+                        {{depend order.canAddTrackingNumber()}}
+                        {{var order.createTrackingHyperlinks()}}
+                        {{/depend}}
+                    </comment>
+                </field>
+
+                <field id="tracking_urls" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Shipping map</label>
+                    <frontend_model>Monogo\TrackingNumber\Model\Config\Source\TrackingUrlsRenderer</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <comment>Use $tracking_number$ to position the tracking code in url</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
