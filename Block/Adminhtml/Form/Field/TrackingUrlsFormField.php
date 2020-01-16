@@ -47,11 +47,19 @@ class TrackingUrlsFormField extends \Magento\Framework\View\Element\Html\Select
         if (!$this->getOptions()) {
             $carriers = $this->shippingConfig->getAllCarriers();
             foreach ($carriers as $carrierCode => $carrierModel) {
+                $display = !$carrierModel->isActive() ? ['style' => 'display:none'] : [];
                 $carrierTitle = $this->_scopeConfig->getValue(
                     'carriers/' . $carrierCode . '/title',
                     \Magento\Store\Model\ScopeInterface::SCOPE_STORE
                 ) ?: $carrierCode;
-                $this->addOption($carrierCode, $carrierTitle);
+                $carrierMethods = $carrierModel->getAllowedMethods();
+                if (!$carrierMethods) {
+                    continue;
+                }
+                foreach ($carrierMethods as $methodCode => $methodTitle) {
+                    $methodTitle = $methodTitle ?: $methodCode;
+                    $this->addOption($carrierCode . '_' . $methodCode, $carrierTitle . ' - ' . $methodTitle, $display);
+                }
             }
         }
         return parent::_toHtml();

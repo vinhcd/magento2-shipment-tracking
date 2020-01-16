@@ -19,7 +19,7 @@ class TrackingUrlsRenderer extends AbstractFieldArray
      */
     protected function _prepareToRender()
     {
-        $this->addColumn('carrier',
+        $this->addColumn('method',
             [
                 'label' => __('Shipping method'),
                 'class' => 'required-entry',
@@ -54,7 +54,7 @@ class TrackingUrlsRenderer extends AbstractFieldArray
     protected function _prepareArrayRow(\Magento\Framework\DataObject $row)
     {
         $options = [];
-        $carrierAttribute = $row->getData('carrier');
+        $carrierAttribute = $row->getData('method');
 
         $key = 'option_' . $this->getCarriersRenderer()->calcOptionHash($carrierAttribute);
         $options[$key] = 'selected="selected"';

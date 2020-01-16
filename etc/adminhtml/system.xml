@@ -26,7 +26,7 @@
                     </comment>
                 </field>
 
-                <field id="tracking_urls" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="mapping_urls" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Shipping map</label>
                     <frontend_model>Monogo\TrackingNumber\Model\Config\Source\TrackingUrlsRenderer</frontend_model>
                     <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
