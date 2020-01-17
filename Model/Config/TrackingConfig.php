@@ -8,7 +8,7 @@ use Psr\Log\LoggerInterface;
 
 class TrackingConfig
 {
-    const ENABLED = 'shipping/tracking_number/enabled';
+    const ENABLED = 'shipping/tracking_number/active';
 
     const INCLUDE_IN_CUSTOMER_DSB = 'shipping/tracking_number/include_in_customer_dashboard';
 
@@ -47,7 +47,7 @@ class TrackingConfig
      */
     public function isEnabled()
     {
-        return $this->config->getValue(self::ENABLED) === 1;
+        return $this->config->getValue(self::ENABLED) == 1;
     }
 
     /**
@@ -55,7 +55,7 @@ class TrackingConfig
      */
     public function includeInCustomerDashboard()
     {
-        return $this->config->getValue(self::INCLUDE_IN_CUSTOMER_DSB) === 1;
+        return $this->config->getValue(self::INCLUDE_IN_CUSTOMER_DSB) == 1;
     }
 
     /**

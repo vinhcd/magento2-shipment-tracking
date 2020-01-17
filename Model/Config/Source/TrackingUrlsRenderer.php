@@ -28,7 +28,7 @@ class TrackingUrlsRenderer extends AbstractFieldArray
         );
         $this->addColumn('url',['label' => __('Tracking URL'), 'class' => 'required-entry']);
         $this->_addAfter = false;
-        $this->_addButtonLabel = __('Add Url');
+        $this->_addButtonLabel = __('Add Mapping');
     }
 
     /**

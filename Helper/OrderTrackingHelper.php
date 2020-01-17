@@ -34,6 +34,14 @@ class OrderTrackingHelper extends AbstractHelper
     }
 
     /**
+     * @return TrackingConfig
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    /**
      * @param Order $order
      * @param string $trackingNumber
      * @return string
