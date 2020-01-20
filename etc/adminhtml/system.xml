@@ -18,11 +18,11 @@
 
                 <field id="email_inclusion" translate="label" type="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Code in email</label>
-                    <comment>
+                    <comment><![CDATA[
                         Add this code to email, to show tracking links:
                         {{depend has_tracking_links}}
                         {{var tracking_links|raw}}
-                        {{/depend}}
+                        {{/depend}}]]>
                     </comment>
                 </field>
 
