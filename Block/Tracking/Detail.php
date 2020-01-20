@@ -88,7 +88,7 @@ class Detail extends \Magento\Framework\View\Element\Template
      */
     public function getTrackingUrl($trackingNumber)
     {
-        if ($this->getOrder() && $this->orderTrackingHelper->getConfig()->isEnabled()) {
+        if ($this->getOrder() && $this->orderTrackingHelper->isConfigEnabled()) {
             return $this->orderTrackingHelper->getTrackingUrl($this->getOrder(), $trackingNumber);
         }
         return '';

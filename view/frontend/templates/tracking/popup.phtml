@@ -28,8 +28,7 @@ $results = $block->getTrackingInfo();
                                 'track' => $track,
                                 'template' => 'Monogo_TrackingNumber::tracking/details.phtml',
                                 'storeSupportEmail' => $block->getStoreSupportEmail()
-                            ]
-                        );
+                            ]);
                         ?>
                         <?= /* @noEscape */ $block->getChildHtml('shipping.tracking.details.' . $shipmentBlockIdentifier) ?>
                     </div>

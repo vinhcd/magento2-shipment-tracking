@@ -22,6 +22,11 @@ class OrderTrackingHelper extends AbstractHelper
     protected $config;
 
     /**
+     * @var array
+     */
+    protected $orderLinks = [];
+
+    /**
      * OrderTracking constructor.
      * @param Context $context
      * @param TrackingConfig $config
@@ -39,6 +44,14 @@ class OrderTrackingHelper extends AbstractHelper
     public function getConfig()
     {
         return $this->config;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isConfigEnabled()
+    {
+        return $this->getConfig()->isEnabled();
     }
 
     /**
@@ -61,21 +74,40 @@ class OrderTrackingHelper extends AbstractHelper
      * @param Order|OrderInterface $order
      * @return array
      */
-    public function getTrackingUrls($order)
+    public function getTrackingNumbersAndUrls($order)
     {
+        $id = $order->getId();
+        if (array_key_exists($id, $this->orderLinks)) {
+            return  $this->orderLinks[$id];
+        }
         $links = [];
 
         $shippingMethod = $order->getShippingMethod();
         $trackCollection = $order->getTracksCollection();
         $mappingUrls = $this->config->getMappingUrls();
-
         if (array_key_exists($shippingMethod, $mappingUrls)) {
             /** @var Track $track */
             foreach ($trackCollection as $track) {
-                $links[] = str_replace($this->getSign(), $track->getNumber(), $mappingUrls[$shippingMethod]);
+                $links[] = ['number' => $track->getNumber(), 'url' => str_replace($this->getSign(), $track->getNumber(), $mappingUrls[$shippingMethod])];
             }
         }
+        $this->orderLinks[$id] = $links;
+
         return $links;
+    }
+
+    /**
+     * @param Order|OrderInterface $order
+     * @return string
+     */
+    public function generateTrackingHtml($order)
+    {
+        $html = '';
+        $links = $this->getTrackingNumbersAndUrls($order);
+        foreach ($links as $link) {
+            $html .= '<a href="' . $link['url'] . '" target="_blank">' . $link['number'] . '</a><br/>';
+        }
+        return $html;
     }
 
     /**
