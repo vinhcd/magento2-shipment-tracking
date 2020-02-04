@@ -4,11 +4,11 @@ namespace Monogo\TrackingNumber\Observer;
 
 use Magento\Framework\DataObject;
 use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
 use Magento\Sales\Model\Order;
-use Magento\Sales\Model\Order\Email\Sender\OrderSender;
 use Monogo\TrackingNumber\Helper\OrderTrackingHelper;
 
-class AddTrackingToEmail implements \Magento\Framework\Event\ObserverInterface
+class AddTrackingToEmail implements ObserverInterface
 {
     /**
      * @var OrderTrackingHelper
@@ -29,8 +29,7 @@ class AddTrackingToEmail implements \Magento\Framework\Event\ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        $sender = $observer->getData('sender');
-        if (!$this->trackingHelper->isConfigEnabled() || !$sender instanceof OrderSender) {
+        if (!$this->trackingHelper->isConfigEnabled()) {
             return;
         }
         /** @var DataObject $transport */
@@ -38,7 +37,7 @@ class AddTrackingToEmail implements \Magento\Framework\Event\ObserverInterface
         /** @var Order $order */
         $order = $transport->getData('order');
 
-        if (count($this->trackingHelper->getTrackingNumbersAndUrls($order)) > 0) {
+        if ($order && count($this->trackingHelper->getTrackingNumbersAndUrls($order)) > 0) {
             $transport->setData('has_tracking_links', true);
             $transport->setData('tracking_links', $this->trackingHelper->generateTrackingHtml($order));
         }
