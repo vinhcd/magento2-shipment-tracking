@@ -15,6 +15,11 @@ class TrackingConfig
     const MAPPING_URLS = 'shipping/tracking_number/mapping_urls';
 
     /**
+     * @var string
+     */
+    protected $sign = '$tracking_number$';
+
+    /**
      * @var ScopeConfigInterface
      */
     protected $config;
@@ -51,6 +56,15 @@ class TrackingConfig
     }
 
     /**
+     * @return string
+     */
+    public function getSign()
+    {
+        return $this->sign;
+    }
+
+    /**
+     * @todo for reservation at this time
      * @return bool
      */
     public function includeInCustomerDashboard()

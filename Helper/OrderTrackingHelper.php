@@ -12,11 +12,6 @@ use Monogo\TrackingNumber\Model\Config\TrackingConfig;
 class OrderTrackingHelper extends AbstractHelper
 {
     /**
-     * @var string
-     */
-    protected $sign = '$tracking_number$';
-
-    /**
      * @var TrackingConfig
      */
     protected $config;
@@ -65,7 +60,7 @@ class OrderTrackingHelper extends AbstractHelper
         $mappingUrls = $this->config->getMappingUrls();
 
         if (array_key_exists($shippingMethod, $mappingUrls)) {
-            return str_replace($this->getSign(), $trackingNumber, $mappingUrls[$shippingMethod]);
+            return str_replace($this->config->getSign(), $trackingNumber, $mappingUrls[$shippingMethod]);
         }
         return '';
     }
@@ -88,7 +83,7 @@ class OrderTrackingHelper extends AbstractHelper
         if (array_key_exists($shippingMethod, $mappingUrls)) {
             /** @var Track $track */
             foreach ($trackCollection as $track) {
-                $links[] = ['number' => $track->getNumber(), 'url' => str_replace($this->getSign(), $track->getNumber(), $mappingUrls[$shippingMethod])];
+                $links[] = ['number' => $track->getNumber(), 'url' => str_replace($this->config->getSign(), $track->getNumber(), $mappingUrls[$shippingMethod])];
             }
         }
         $this->orderLinks[$id] = $links;
@@ -108,13 +103,5 @@ class OrderTrackingHelper extends AbstractHelper
             $html .= '<a href="' . $link['url'] . '" target="_blank">' . $link['number'] . '</a><br/>';
         }
         return $html;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getSign()
-    {
-        return $this->sign;
     }
 }

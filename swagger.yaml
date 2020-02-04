@@ -1,0 +1,55 @@
+openapi: 3.0.0
+servers: []
+info:
+  description: Monolog TrackingNumber API
+  version: "1.0.0"
+  title: Monolog TrackingNumber API
+  license:
+    name: BSS Commerce
+    url: 'https://bsscommerce.com/'
+tags:
+  - name: sales
+    description: Sales
+paths:
+  /V1/headless/order-tracking/get/links/{orderId}:
+    get:
+      tags:
+        - sales
+      summary: get order urls
+      operationId: searchInventory
+      description: |
+        Get tracking information for orders.
+      parameters:
+        - in: path
+          name: orderId
+          description: the ID of order need to get tracking
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TrackingLink'
+components:
+  schemas:
+    TrackingLink:
+      type: object
+      required:
+        - title
+        - number
+        - url
+      properties:
+        title:
+          type: string
+          example: United Parcel Service
+        number:
+          type: string
+          example: TORD23254WERZXd3
+        url:
+          type: string
+          example: 'http://test.com/track?q=TORD23254WERZXd3&n=1'
