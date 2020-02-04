@@ -41,7 +41,7 @@ class TrackingUrlsRenderer extends AbstractFieldArray
             $this->renderer = $this->getLayout()->createBlock(
                 TrackingUrlsFormField::class,
                 '',
-                ['data' => ['is_render_to_js_template' => true]]
+                ['data' => ['is_render_to_js_template' => true, 'class' => 'required-entry']]
             );
         }
         return $this->renderer;

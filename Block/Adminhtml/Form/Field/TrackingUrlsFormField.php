@@ -45,6 +45,7 @@ class TrackingUrlsFormField extends \Magento\Framework\View\Element\Html\Select
     public function _toHtml()
     {
         if (!$this->getOptions()) {
+            $this->addOption('', '');
             $carriers = $this->shippingConfig->getAllCarriers();
             foreach ($carriers as $carrierCode => $carrierModel) {
                 $display = !$carrierModel->isActive() ? ['style' => 'display:none'] : [];
