@@ -2,6 +2,9 @@
 
 namespace Monogo\TrackingNumber\Model;
 
+use Magento\Framework\Data\Collection;
+use Magento\Framework\Data\CollectionFactory;
+use Magento\Framework\DataObject;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order\Shipment\Track;
@@ -19,15 +22,24 @@ class TrackingManagement implements TrackingManagementInterface
      * @var OrderRepositoryInterface
      */
     private $orderRepository;
+    /**
+     * @var \Monogo\TrackingNumber\Model\CollectionFactory
+     */
+    private $collectionFactory;
 
     /**
      * @param TrackingConfig $trackingConfig
      * @param OrderRepositoryInterface $orderRepository
      */
-    public function __construct(TrackingConfig $trackingConfig, OrderRepositoryInterface $orderRepository)
+    public function __construct(
+        TrackingConfig $trackingConfig,
+        OrderRepositoryInterface $orderRepository,
+        CollectionFactory $collectionFactory
+    )
     {
         $this->config = $trackingConfig;
         $this->orderRepository = $orderRepository;
+        $this->collectionFactory = $collectionFactory;
     }
 
     /**
@@ -41,25 +53,27 @@ class TrackingManagement implements TrackingManagementInterface
     }
 
     /**
-     * @param OrderInterface $order
-     * @return array
+     * @param $order
+     * @return Collection
+     * @throws \Exception
      */
     public function getTrackMappings($order)
     {
-        $mappings = [];
         $shippingMethod = $order->getShippingMethod();
         $trackCollection = $order->getTracksCollection();
         $mappingUrls = $this->config->getMappingUrls();
+        $result = $this->collectionFactory->create();
         if (array_key_exists($shippingMethod, $mappingUrls)) {
             /** @var Track $track */
             foreach ($trackCollection as $track) {
-                $mappings[] = [
-                    'title' => $track->getTitle(),
-                    'number' => $track->getNumber(),
-                    'url' => str_replace($this->config->getSign(), $track->getNumber(), $mappingUrls[$shippingMethod])
-                ];
+                $trackItem = new DataObject();
+                $trackItem->setTitle($track->getTitle());
+                $trackItem->setNumber($track->getNumber());
+                $trackItem->setUrl(str_replace($this->config->getSign(), $track->getNumber(), $mappingUrls[$shippingMethod]));
+
+                $result->addItem($trackItem);
             }
         }
-        return $mappings;
+        return $result;
     }
 }
