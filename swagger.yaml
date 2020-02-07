@@ -11,8 +11,8 @@ tags:
   - name: sales
     description: Sales
 paths:
-  /V1/headless/order-tracking/get/links/{orderId}:
-    get:
+  /V1/headless/tracking-number/get:
+    post:
       tags:
         - sales
       summary: get order urls
@@ -20,7 +20,7 @@ paths:
       description: |
         Get tracking information for orders.
       parameters:
-        - in: path
+        - in: query
           name: orderId
           description: the ID of order need to get tracking
           required: true
