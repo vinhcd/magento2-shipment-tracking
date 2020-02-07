@@ -10,6 +10,7 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order\Shipment\Track;
 use Monogo\TrackingNumber\Api\TrackingManagementInterface;
 use Monogo\TrackingNumber\Model\Config\TrackingConfig;
+use Monogo\TrackingNumber\Model\TrackingDataFactory;
 
 class TrackingManagement implements TrackingManagementInterface
 {
@@ -22,24 +23,35 @@ class TrackingManagement implements TrackingManagementInterface
      * @var OrderRepositoryInterface
      */
     private $orderRepository;
+
     /**
-     * @var \Monogo\TrackingNumber\Model\CollectionFactory
+     * @var CollectionFactory
      */
     private $collectionFactory;
 
     /**
+     * @var TrackingDataFactory
+     *
+     */
+    private $trackingDataFactory;
+
+    /**
      * @param TrackingConfig $trackingConfig
      * @param OrderRepositoryInterface $orderRepository
+     * @param CollectionFactory $collectionFactory
+     * @param TrackingDataFactory $trackingDataFactory
      */
     public function __construct(
         TrackingConfig $trackingConfig,
         OrderRepositoryInterface $orderRepository,
-        CollectionFactory $collectionFactory
+        CollectionFactory $collectionFactory,
+        TrackingDataFactory $trackingDataFactory
     )
     {
         $this->config = $trackingConfig;
         $this->orderRepository = $orderRepository;
         $this->collectionFactory = $collectionFactory;
+        $this->trackingDataFactory = $trackingDataFactory;
     }
 
     /**
@@ -53,7 +65,7 @@ class TrackingManagement implements TrackingManagementInterface
     }
 
     /**
-     * @param $order
+     * @param OrderInterface $order
      * @return Collection
      * @throws \Exception
      */
@@ -66,7 +78,7 @@ class TrackingManagement implements TrackingManagementInterface
         if (array_key_exists($shippingMethod, $mappingUrls)) {
             /** @var Track $track */
             foreach ($trackCollection as $track) {
-                $trackItem = new DataObject();
+                $trackItem = $this->trackingDataFactory->create();
                 $trackItem->setTitle($track->getTitle());
                 $trackItem->setNumber($track->getNumber());
                 $trackItem->setUrl(str_replace($this->config->getSign(), $track->getNumber(), $mappingUrls[$shippingMethod]));

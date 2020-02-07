@@ -36,5 +36,4 @@ interface TrackingDataInterface
      * @return $this
      */
     public function setUrl($url);
-
 }
