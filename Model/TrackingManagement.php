@@ -4,7 +4,6 @@ namespace Monogo\TrackingNumber\Model;
 
 use Magento\Framework\Data\Collection;
 use Magento\Framework\Data\CollectionFactory;
-use Magento\Framework\DataObject;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order\Shipment\Track;
@@ -17,23 +16,23 @@ class TrackingManagement implements TrackingManagementInterface
     /**
      * @var TrackingConfig
      */
-    private $config;
+    protected $config;
 
     /**
      * @var OrderRepositoryInterface
      */
-    private $orderRepository;
+    protected $orderRepository;
 
     /**
      * @var CollectionFactory
      */
-    private $collectionFactory;
+    protected $collectionFactory;
 
     /**
      * @var TrackingDataFactory
      *
      */
-    private $trackingDataFactory;
+    protected $trackingDataFactory;
 
     /**
      * @param TrackingConfig $trackingConfig
